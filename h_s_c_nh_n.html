@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ Sơ Cá Nhân - Huynh Duy Khanh</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cấu hình Tailwind cho Dark Mode & Custom Animations -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'ken-burns': 'kenburns 30s ease-in-out infinite alternate',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        kenburns: {
+                            '0%': { transform: 'scale(1) translate(0, 0)' },
+                            '50%': { transform: 'scale(1.05) translate(-1%, -2%)' },
+                            '100%': { transform: 'scale(1.1) translate(1%, 2%)' }
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden; 
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Lớp nền Samurai với hiệu ứng Animation */
+        .bg-samurai {
+            position: fixed;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            /* Sử dụng một hình nền phong cảnh thiên nhiên 4K chất lượng cao */
+            background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            will-change: transform;
+        }
+
+        /* Lớp phủ màn hình (Overlay) hỗ trợ Sáng/Tối */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+        /* Light mode overlay */
+        .light .bg-overlay {
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+        /* Dark mode overlay */
+        .dark .bg-overlay {
+            background-color: rgba(15, 23, 42, 0.6);
+        }
+
+        /* Hiệu ứng Toast thông báo */
+        #toast {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            opacity: 0;
+            transform: translateY(20px);
+            pointer-events: none;
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Ẩn scrollbar cho khu vực có thể cuộn */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="text-gray-900 dark:text-white transition-colors duration-500 min-h-screen flex items-center justify-center p-4 relative antialiased">
+
+    <!-- Hình nền động -->
+    <div class="bg-scenery animate-ken-burns"></div>
+    
+    <!-- Lớp phủ (Overlay) -->
+    <div class="bg-overlay"></div>
+
+    <!-- Main Card (Glassmorphism) -->
+    <div class="relative w-full max-w-sm rounded-[2.5rem] overflow-hidden transition-all duration-500 shadow-[0_8px_32px_0_rgba(31,38,135,0.2)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.7)] backdrop-blur-xl bg-white/70 dark:bg-slate-900/60 border border-white/50 dark:border-slate-700/50">
+        
+        <!-- Nút chuyển đổi Dark/Light mode -->
+        <button id="theme-toggle" class="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/50 dark:bg-slate-800/50 backdrop-blur-md flex items-center justify-center text-gray-800 dark:text-gray-200 hover:bg-white/90 dark:hover:bg-slate-700/90 transition-all duration-300 z-20 shadow-sm border border-white/30 dark:border-slate-600/40" aria-label="Chuyển đổi giao diện">
+            <i id="theme-icon" class="fa-solid fa-moon text-lg"></i>
+        </button>
+
+        <!-- Header phần trên cùng (Gradient) -->
+        <div class="h-32 w-full bg-gradient-to-br from-emerald-500/80 to-teal-600/80 dark:from-emerald-700/80 dark:to-slate-800/80 relative">
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-40"></div>
+        </div>
+
+        <!-- Thông tin hồ sơ -->
+        <div class="px-6 pb-8 -mt-16 relative z-10 flex flex-col items-center">
+            
+            <!-- Avatar -->
+            <div class="relative animate-float mb-3">
+                <img src="cho.jpg" alt="Ảnh đại diện" class="w-32 h-32 rounded-full border-[4px] border-white/80 dark:border-slate-800/80 object-cover shadow-xl backdrop-blur-sm">
+                <!-- Chấm xanh trạng thái -->
+                <span class="absolute bottom-3 right-2 w-5 h-5 bg-green-500 border-[3px] border-white dark:border-slate-800 rounded-full shadow-md"></span>
+            </div>
+
+            <!-- Tên & Chức danh -->
+            <h1 class="text-2xl font-bold mb-1 tracking-tight">Huynh Duy Khanh</h1>
+            <h2 class="text-xs font-semibold text-emerald-700 dark:text-emerald-300 mb-4 tracking-[0.15em] uppercase bg-emerald-100/50 dark:bg-emerald-900/30 px-3 py-1 rounded-full border border-emerald-200/50 dark:border-emerald-700/50">
+                Frontend Developer
+            </h2>
+            
+            <!-- Mô tả -->
+            <p class="text-center text-gray-700 dark:text-gray-300 text-sm leading-relaxed mb-6 font-medium">
+                Đam mê công nghệ, thích khám phá và xây dựng những ứng dụng hiện đại mang tính thực tiễn cao. 💻✨
+            </p>
+
+            <!-- Mạng xã hội -->
+            <div class="flex justify-center gap-4 mb-6 w-full">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/hengaplai.ToT" target="_blank" aria-label="Facebook" class="flex-1 h-12 rounded-2xl bg-white/50 dark:bg-slate-800/50 hover:bg-[#1877F2]/90 hover:text-white dark:hover:bg-[#1877F2]/90 flex items-center justify-center text-[#1877F2] dark:text-[#3b82f6] border border-white/40 dark:border-slate-600/30 backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 group">
+                    <i class="fa-brands fa-facebook-f text-xl group-hover:scale-110 transition-transform"></i>
+                </a>
+                
+                <!-- Zalo -->
+                <a href="https://zalo.me/" target="_blank" aria-label="Zalo" class="flex-1 h-12 rounded-2xl bg-white/50 dark:bg-slate-800/50 hover:bg-[#0068FF]/90 hover:text-white dark:hover:bg-[#0068FF]/90 flex items-center justify-center text-[#0068FF] dark:text-[#60a5fa] border border-white/40 dark:border-slate-600/30 backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 group">
+                    <span class="font-bold text-[14px] tracking-wider group-hover:scale-110 transition-transform">Zalo</span>
+                </a>
+                
+                <!-- Telegram -->
+                <a href="https://t.me/SCOOBYDOO019" target="_blank" aria-label="Telegram" class="flex-1 h-12 rounded-2xl bg-white/50 dark:bg-slate-800/50 hover:bg-[#229ED9]/90 hover:text-white dark:hover:bg-[#229ED9]/90 flex items-center justify-center text-[#229ED9] dark:text-[#38bdf8] border border-white/40 dark:border-slate-600/30 backdrop-blur-md transition-all duration-300 shadow-sm hover:shadow-lg transform hover:-translate-y-1 group">
+                    <i class="fa-brands fa-telegram text-2xl group-hover:scale-110 transition-transform"></i>
+                </a>
+            </div>
+
+            <!-- Khu vực QR Code Telegram -->
+            <div class="w-full mt-2 pt-5 border-t border-gray-300/40 dark:border-slate-600/40 flex flex-col items-center">
+                <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-3">
+                    Quét mã để kết nối Telegram
+                </h3>
+                
+                <a href="https://t.me/SCOOBYDOO019" target="_blank" aria-label="Kết nối Telegram qua mã QR" class="p-2.5 bg-white/80 dark:bg-white rounded-2xl shadow-md border border-gray-200 dark:border-none backdrop-blur-sm transform transition-transform hover:scale-105 duration-300 mb-5 block cursor-pointer">
+                    <!-- Ảnh QR code mới -->
+                    <img src="Screenshot 2026-10-07 212746_2.png" alt="Mã QR Telegram" class="w-36 h-36 object-contain rounded-xl">
+                </a>
+
+                <!-- Nút Copy Email -->
+                <button id="copy-email-btn" class="w-full bg-emerald-600/90 hover:bg-emerald-600 text-white font-medium py-3 px-4 rounded-2xl transition-all duration-300 shadow-lg hover:shadow-emerald-500/30 flex items-center justify-center gap-2 backdrop-blur-md active:scale-95">
+                    <i class="fa-regular fa-envelope text-lg"></i> 
+                    <span>Sao chép Email</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Thông báo Toast (hiển thị khi copy) -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-gray-900/95 dark:bg-white/95 text-white dark:text-gray-900 px-6 py-3 rounded-full shadow-2xl flex items-center gap-3 z-50 backdrop-blur-md border border-gray-700 dark:border-gray-200">
+        <i class="fa-solid fa-circle-check text-emerald-400 dark:text-emerald-600 text-lg"></i>
+        <span class="font-medium text-sm">Đã sao chép email!</span>
+    </div>
+
+    <!-- Script điều khiển -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. XỬ LÝ GIAO DIỆN SÁNG/TỐI (DARK MODE) ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeIcon = document.getElementById('theme-icon');
+            const htmlTag = document.documentElement;
+            
+            // Lấy trạng thái lưu trữ hoặc mặc định là dark mode
+            let isDarkMode = localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme');
+
+            const applyTheme = (dark) => {
+                if (dark) {
+                    htmlTag.classList.add('dark');
+                    htmlTag.classList.remove('light');
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    htmlTag.classList.add('light');
+                    htmlTag.classList.remove('dark');
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            };
+
+            // Khởi tạo giao diện ban đầu
+            applyTheme(isDarkMode);
+
+            // Sự kiện nhấn nút chuyển đổi
+            themeToggleBtn.addEventListener('click', () => {
+                isDarkMode = !isDarkMode;
+                applyTheme(isDarkMode);
+                localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            });
+
+            // --- 2. XỬ LÝ SAO CHÉP EMAIL ---
+            const copyEmailBtn = document.getElementById('copy-email-btn');
+            const toast = document.getElementById('toast');
+            const userEmail = "huynhduykhanh@example.com"; // Email mẫu
+            let toastTimeout;
+
+            copyEmailBtn.addEventListener('click', () => {
+                // Sử dụng textarea ẩn để copy text (đảm bảo hoạt động trong iframe)
+                const textArea = document.createElement("textarea");
+                textArea.value = userEmail;
+                textArea.style.position = "fixed"; 
+                textArea.style.opacity = "0";
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                try {
+                    document.execCommand('copy');
+                    showToast();
+                } catch (err) {
+                    console.error('Không thể sao chép email!', err);
+                }
+
+                document.body.removeChild(textArea);
+            });
+
+            function showToast() {
+                if (toastTimeout) {
+                    clearTimeout(toastTimeout);
+                }
+                
+                toast.classList.add('show');
+                
+                // Ẩn toast sau 2.5 giây
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+        });
+    </script>
+</body>
+</html>
